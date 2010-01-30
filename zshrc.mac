@@ -41,7 +41,7 @@ PATH="/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin/:$PATH"
 HISTFILE=$HOME/.zhistory
 HISTSIZE=1000
 SAVEHIST=1000
-HOSTNAME="Photon"
+HOSTNAME="`hostname`"
 PAGER='less'
 EDITOR='nano'
     autoload colors zsh/terminfo
@@ -106,8 +106,10 @@ bindkey "^[[5~" up-line-or-history
 bindkey "^[[6~" down-line-or-history
 bindkey "^[[H" beginning-of-line
 bindkey "^[[1~" beginning-of-line
+bindkey "^A" beginning-of-line
 bindkey "^[[F"  end-of-line
 bindkey "^[[4~" end-of-line
+bindkey "^E" end-of-line
 bindkey ' ' magic-space    # also do history expansion on space
 bindkey '^I' complete-word # complete on tab, leave expansion to _expand
 
