@@ -35,13 +35,13 @@ zmodload -a zsh/zpty zpty
 zmodload -a zsh/zprof zprof
 zmodload -ap zsh/mapfile mapfile
 
-
 PATH="/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin/:$PATH"
 #TZ="America/New_York"
 HISTFILE=$HOME/.zhistory
 HISTSIZE=1000
 SAVEHIST=1000
-HOSTNAME="`hostname`"
+#HOSTNAME="`hostname`"
+HOSTNAME="Photon"
 PAGER='less'
 EDITOR='nano'
     autoload colors zsh/terminfo
@@ -54,8 +54,29 @@ EDITOR='nano'
    (( count = $count + 1 ))
     done
     PR_NO_COLOR="%{$terminfo[sgr0]%}"
-PS1="[$PR_MAGENTA%n$PR_NO_COLOR@$PR_GREEN%U%m%u$PR_NO_COLOR:$PR_RED%2c$PR_NO_COLOR]%(!.#.$) "
-RPS1="$PR_MAGENTA(%D{%m-%d %H:%M})$PR_NO_COLOR"
+
+# VCS info
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' actionformats \
+    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+zstyle ':vcs_info:*' formats       \
+    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f '
+zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
+
+zstyle ':vcs_info:*' enable git cvs svn
+
+# or use pre_cmd, see man zshcontrib
+vcs_info_wrapper() {
+  vcs_info
+  if [ -n "$vcs_info_msg_0_" ]; then
+    echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
+  fi
+}
+
+setopt prompt_subst
+PROMPT="[$PR_MAGENTA%n$PR_NO_COLOR@$PR_GREEN%U%m%u$PR_NO_COLOR:$PR_RED%2c$PR_NO_COLOR]"'$(vcs_info_wrapper)'"%(!.#.$) "
+RPROMPT="$PR_MAGENTA(%D{%m-%d %H:%M})$PR_NO_COLOR"
+
 #LANGUAGE=
 LC_ALL='zh_TW.utf-8'
 LANG='zh_TW.utf-8'
@@ -75,7 +96,8 @@ unsetopt ALL_EXPORT
 alias slrn="slrn -n"
 alias man='LC_ALL=C LANG=C man'
 alias f=finger
-alias ll='ls -al'
+alias ls='ls -G'
+alias ll='ls -alG'
 alias offlineimap-tty='offlineimap -u TTY.TTYUI'
 alias hnb-partecs='hnb $HOME/partecs/partecs-hnb.xml'
 alias rest2html-css='rst2html --embed-stylesheet --stylesheet-path=/usr/share/python-docutils/s5_html/themes/default/print.css'
