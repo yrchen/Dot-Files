@@ -6,12 +6,9 @@
 	status = auto
 	branch = auto
 	ui = true
-[github]
-	user = yrchen
-	token = ed120ffa8edb359d4e29a8d95cc23f66
 [core]
 	editor = nano
-	excludesfile = ~/.gitglobal_ignore
+	excludesfile = /Users/yrchen/.gitignore_global
 [alias]
 	co = checkout
 	ci = commit
@@ -23,4 +20,3 @@
 	zip = archive --format zip -o $(git log --pretty=format:"%h" -1).zip HEAD
 [branch]
 	autosetuprebase = always
-
