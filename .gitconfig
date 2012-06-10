@@ -8,7 +8,7 @@
 	ui = true
 [core]
 	editor = nano
-	excludesfile = /Users/yrchen/.gitignore_global
+	excludesfile = ~/.gitignore_global
 [alias]
 	co = checkout
 	ci = commit
